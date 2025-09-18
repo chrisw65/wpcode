@@ -5,7 +5,6 @@ from pathlib import Path
 
 from wpcode_tool.parser import load_snippets
 
-
 FIXTURE = Path(__file__).parent / "fixtures" / "wpcode_export.json"
 
 
@@ -80,12 +79,11 @@ def test_load_snippets_reports_languages_and_counts(tmp_path):
         ]
     }
     path = tmp_path / "languages.json"
-
     path.write_text(json.dumps(export), encoding="utf-8")
 
     snippets = load_snippets(path)
-
     languages = sorted(snippet.language for snippet in snippets)
 
     assert len(snippets) == 3
+    # Expect your loader to normalize "js" -> "javascript"
     assert languages == ["css", "javascript", "php"]
