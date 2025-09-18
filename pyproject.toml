@@ -19,3 +19,4 @@ wpcode-tool = "wpcode_tool.cli:main"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+
