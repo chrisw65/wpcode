@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+src/wpcode_tool.egg-info/
+*.egg-info
+build/
