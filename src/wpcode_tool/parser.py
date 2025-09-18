@@ -99,16 +99,49 @@ def _extract_code(entry: dict) -> str:
 
 
 def _is_active(entry: dict) -> bool:
-    for key in ("active", "is_active", "enabled", "status"):
+    """
+    Determine whether a config-like dict represents an 'active' state.
+    Checks common flags in order; the first present, parseable key wins.
+
+    Recognized truthy strings:  true, 1, yes, on, active, enabled
+    Recognized falsy  strings:  false, 0, no, off, inactive, disabled
+    Numeric strings are parsed (e.g., "2" -> True, "0" -> False).
+    Dict values (e.g., nested configs) are treated as False for these flags.
+    Unrecognized strings default to False.
+    """
+    TRUTHY = {"true", "1", "yes", "on", "active", "enabled"}
+    FALSY  = {"false", "0", "no", "off", "inactive", "disabled"}
+
+    def parse_value(v) -> bool | None:
+        # Return True/False if we can decide, else None to mean "unparseable"
+        if isinstance(v, bool):
+            return v
+        if isinstance(v, (int, float)):
+            return bool(v)
+        if isinstance(v, dict):
+            return False
+        if isinstance(v, str):
+            s = v.strip().lower()
+            if s in TRUTHY:
+                return True
+            if s in FALSY:
+                return False
+            # try numeric string
+            try:
+                return bool(float(s))
+            except ValueError:
+                return False
+        return None
+
+    # Check common keys in priority order; add 'auto_insert' as a final alias
+    for key in ("active", "is_active", "enabled", "status", "auto_insert"):
         if key in entry:
-            value = entry[key]
-            if isinstance(value, bool):
-                return value
-            if isinstance(value, (int, float)):
-                return bool(value)
-            if isinstance(value, str):
-                return value.strip().lower() in {"true", "1", "active", "enabled", "on"}
+            decided = parse_value(entry[key])
+            if decided is not None:
+                return decided
+
     return False
+
 
 
 def _iter_snippet_entries(data: object) -> Iterable[dict]:
