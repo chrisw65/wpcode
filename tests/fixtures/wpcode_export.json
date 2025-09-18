@@ -1,0 +1,50 @@
+{
+  "generated_at": "2024-01-10 12:00:00",
+  "plugin": "wpcode",
+  "snippets": [
+    {
+      "id": 101,
+      "title": "Add Custom Body Class",
+      "code": "add_filter('body_class', function ($classes) {\\n    $classes[] = 'custom-body';\\n    return $classes;\\n});",
+      "code_type": "php",
+      "active": true,
+      "auto_insert": {
+        "location": "everywhere",
+        "priority": 12
+      },
+      "tags": ["theme", "layout"],
+      "notes": "Adds a CSS class to the body tag"
+    },
+    {
+      "id": 102,
+      "title": "Marketing Banner",
+      "code": "<div class=\"marketing-banner\">Don't miss out!</div>",
+      "code_type": "html",
+      "active": true,
+      "auto_insert": {
+        "location": "site-wide footer"
+      },
+      "tags": ["marketing"]
+    },
+    {
+      "id": 103,
+      "title": "Admin Column Tweak",
+      "code": "add_filter('manage_posts_columns', function ($columns) {\\n    $columns['custom'] = 'Custom';\\n    return $columns;\\n});",
+      "code_type": "php",
+      "active": false,
+      "auto_insert": {
+        "location": "admin"
+      }
+    },
+    {
+      "id": 104,
+      "title": "Needs Manual Placement",
+      "code": "echo '<div>Manual placement required</div>';",
+      "code_type": "php",
+      "active": true,
+      "auto_insert": {
+        "location": "manual"
+      }
+    }
+  ]
+}
